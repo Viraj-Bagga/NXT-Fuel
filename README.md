@@ -1,59 +1,59 @@
-# Windsurf - Autonomous Aircraft Fueling App
+# NXT Fuel - Professional Aircraft Refueling Platform
 
-A mobile-friendly web application for ordering aircraft refueling services with robotic fuel truck integration.
+A comprehensive, mobile-friendly web application for professional aircraft refueling operations with real-time service tracking and advanced fuel management.
 
-## Features
+## 🚀 Features
 
-- **Mobile-First Design**: Optimized for smartphone access via QR code
-- **Fuel & Aircraft Compatibility**: Automatic fuel type and nozzle selection based on aircraft
-- **Real-Time Order Logbook**: Live updates of fuel orders
-- **Responsive UI**: Works seamlessly across all device sizes
-- **Aviation Safety**: Built-in logic prevents incompatible fuel/aircraft combinations
+- **Professional Service Tracking**: Real-time fuel bot location and countdown timer
+- **Advanced Airport Search**: 50+ major US airports with smart filtering
+- **Aircraft Compatibility System**: Automatic fuel type and nozzle selection
+- **Mobile-First Design**: Optimized for all devices with aviation-themed UI
+- **Single-Service Management**: Prevents multiple requests during active service
+- **Complete Workflow**: From order submission to service completion
 
-## Aircraft & Fuel Compatibility
+## ✈️ Aircraft & Fuel Compatibility
 
-- **Cessna 172**: Avgas 100LL, Over-wing nozzle
-- **Airbus A320**: Jet-A, Under-wing pressure nozzle
-- **Gulfstream G550**: Jet-A, Under-wing pressure nozzle
-- **AW139 Helicopter**: Jet-A, Over-wing nozzle
-- **Beechcraft King Air 350**: Jet-A, Over-wing nozzle
+- **Single Engine Aircraft**: Cessna 172, Piper Cherokee - Avgas 100LL, Over-wing nozzle
+- **Turboprop Aircraft**: King Air 350 - Jet-A, Under-wing nozzle
+- **Business Jets**: Citation CJ4, Gulfstream G650 - Jet-A, Under-wing nozzle
+- **Light Sport**: Diamond DA40, Cirrus SR22 - Avgas 100LL, Over-wing nozzle
 
-## Quick Start
+## 🎯 Quick Start
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+**Option 1: Direct Use (No Installation)**
+1. Open `index.html` in any modern web browser
+2. Fully functional immediately - no setup required
 
-2. Start the development server:
-   ```bash
-   npm start
-   ```
-
-3. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## Deployment
-
-Build for production:
+**Option 2: Development (Legacy React Components)**
 ```bash
-npm run build
+npm install
+npm start
 ```
 
-The app can be deployed to GitHub Pages, Netlify, or any static hosting service.
+## 🌐 Deployment
 
-## Technology Stack
+**Single-File Deployment:**
+- Upload `index.html` to any web server
+- No backend or database required
+- Works offline
 
-- **Frontend**: React 18
-- **Styling**: CSS3 with Flexbox/Grid
-- **Responsive Design**: Mobile-first approach
-- **Icons**: Unicode emojis for universal compatibility
+**Export Package:**
+- Complete project in `/export/` folder
+- Ready for text message sharing
+- Professional documentation included
 
-## Demo Usage
+## 🛠️ Technology Stack
 
-1. Select an aircraft type from the dropdown
-2. Fuel type automatically sets based on aircraft compatibility
-3. Enter fuel amount in liters
-4. Specify aircraft location (gate, hangar, etc.)
-5. Submit order to see it appear in the logbook
+- **Frontend**: Pure HTML5, CSS3, JavaScript (ES6+)
+- **Styling**: Custom CSS with Poppins font and Font Awesome icons
+- **Architecture**: Single-page application with tab navigation
+- **Responsive**: Mobile-first with professional aviation theme
+
+## 📱 Demo Usage
+
+1. **Home Tab**: View current airport (KTTN) information and weather
+2. **Fuel Request Tab**: Complete order form with aircraft details
+3. **Service Status Tab**: Real-time tracking with countdown timer
+4. **Professional Workflow**: From submission to completion
 
 Perfect for aviation industry demonstrations and hackathon presentations!
