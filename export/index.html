@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windsurf Fuel - Aircraft Refueling Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .orders-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .order-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .order-item h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .order-item p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e1e5e9;
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            color: #999;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            max-width: 120px;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-item i {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .nav-item span {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .taxi-diagram {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .taxi-diagram i {
+            font-size: 4rem;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .taxi-diagram img {
+            max-height: 70vh;
+            width: auto;
+            max-width: 100%;
+        }
+
+        .service-status {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .status-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .status-message i {
+            font-size: 20px;
+            color: #667eea;
+        }
+
+        .airport-map-container {
+            position: relative;
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .bot-marker {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #ff4757;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .queue-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .queue-stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .countdown-timer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .timer-display {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ff4757;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 10px;
+        }
+
+        .timer-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .service-active {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-left: 4px solid #28a745;
+        }
+
+        .service-active .status-message {
+            color: #155724;
+        }
+
+        .service-active .status-message i {
+            color: #28a745;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .profile-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .profile-item i {
+            font-size: 24px;
+            color: #667eea;
+            width: 30px;
+        }
+
+        .profile-item strong {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .profile-item p {
+            color: #666;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .airport-info {
+            text-align: center;
+        }
+
+        .airport-main h3 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.3rem;
+        }
+
+        .airport-main p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .airport-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-row span:first-child {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .detail-row span:last-child {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .detail-row i {
+            margin-right: 8px;
+            color: #667eea;
+        }
+
+        .airport-search-container {
+            position: relative;
+        }
+
+        .airport-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #e1e5e9;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .airport-dropdown.show {
+            display: block;
+        }
+
+        .airport-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f1f1;
+            transition: background-color 0.2s ease;
+        }
+
+        .airport-item:hover,
+        .airport-item.highlighted {
+            background-color: #f8f9fa;
+        }
+
+        .airport-item:last-child {
+            border-bottom: none;
+        }
+
+        .airport-code {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 14px;
+        }
+
+        .airport-name {
+            color: #333;
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        .airport-location {
+            color: #666;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-gas-pump"></i> Nxt Fuel</h1>
+            <p>Professional Aircraft Refueling Platform</p>
+        </div>
+
+        <!-- Home Tab -->
+        <div id="homeTab" class="tab-content active">
+            <div style="display: flex; justify-content: center; align-items: center; min-height: 60vh;">
+                <!-- Current Airport Card -->
+                <div class="card" style="max-width: 600px; width: 100%;">
+                    <h2><i class="fas fa-map-marker-alt"></i> Current Location</h2>
+                    <div class="airport-info">
+                        <div class="airport-main">
+                            <h3>Trenton-Mercer Airport (KTTN)</h3>
+                            <p>Trenton, New Jersey</p>
+                        </div>
+                        <div class="airport-details">
+                            <div class="detail-row">
+                                <span><i class="fas fa-thermometer-half"></i> Weather:</span>
+                                <span>Clear, 72°F</span>
+                            </div>
+                            <div class="detail-row">
+                                <span><i class="fas fa-wind"></i> Wind:</span>
+                                <span>Light, 5 knots</span>
+                            </div>
+                            <div class="detail-row">
+                                <span><i class="fas fa-gas-pump"></i> Fuel Available:</span>
+                                <span>Avgas, Jet-A</span>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="switchTab('fuelOrders')" style="margin-top: 20px;">
+                            <i class="fas fa-plus"></i> Request Fuel Service
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fuel Orders Tab -->
+        <div id="fuelOrdersTab" class="tab-content">
+            <div class="main-content">
+                <!-- Fuel Order Form -->
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h2><i class="fas fa-gas-pump"></i> New Fuel Order Request</h2>
+                    <div id="successMessage" class="success-message">
+                        <i class="fas fa-check-circle"></i> Fuel order submitted successfully!
+                    </div>
+                    <form id="fuelForm">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label for="aircraftModel">Aircraft Model</label>
+                                <select id="aircraftModel" required>
+                                    <option value="">Select Aircraft Model</option>
+                                    <option value="Cessna 172">Cessna 172</option>
+                                    <option value="Cessna 182">Cessna 182</option>
+                                    <option value="Piper Cherokee">Piper Cherokee</option>
+                                    <option value="Piper Archer">Piper Archer</option>
+                                    <option value="Beechcraft Bonanza">Beechcraft Bonanza</option>
+                                    <option value="Cirrus SR22">Cirrus SR22</option>
+                                    <option value="Airbus A320">Airbus A320</option>
+                                    <option value="Boeing 737">Boeing 737</option>
+                                    <option value="Boeing 777">Boeing 777</option>
+                                    <option value="AgustaWestland AW139">AgustaWestland AW139</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fuelType">Fuel Type</label>
+                                <select id="fuelType" required>
+                                    <option value="">Select Fuel Type</option>
+                                    <option value="Avgas 100LL">Avgas 100LL</option>
+                                    <option value="Jet-A">Jet-A</option>
+                                    <option value="Jet-A1">Jet-A1</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="aircraftWeight">Aircraft Weight (lbs)</label>
+                                <input type="number" id="aircraftWeight" min="500" max="800000" placeholder="e.g. 2400" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fuelAmount">Fuel Amount (Gallons)</label>
+                                <input type="number" id="fuelAmount" min="1" max="10000" placeholder="e.g. 50" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tailNumber">Aircraft Tail Number</label>
+                                <input type="text" id="tailNumber" placeholder="e.g. N123AB" pattern="[A-Z0-9]+" style="text-transform: uppercase;" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="destination">Destination Airport</label>
+                                <div class="airport-search-container">
+                                    <input type="text" id="destination" placeholder="Search airports..." autocomplete="off" required>
+                                    <div id="airportDropdown" class="airport-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label for="specialRequests">Special Requests (Optional)</label>
+                            <textarea id="specialRequests" rows="3" placeholder="Any special fueling instructions or requirements..." style="width: 100%; padding: 12px 16px; border: 2px solid #e1e5e9; border-radius: 10px; font-family: inherit; resize: vertical;"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn" style="margin-top: 20px;">
+                            <i class="fas fa-paper-plane"></i> Submit Fuel Request
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Orders List -->
+                <div class="card" style="grid-column: 1 / -1; margin-top: 20px;">
+                    <h2><i class="fas fa-clipboard-list"></i> My Fuel Requests</h2>
+                    <div id="ordersList" class="orders-list">
+                        <div class="empty-state">
+                            <i class="fas fa-clipboard"></i>
+                            <p>No fuel requests yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fuel Service Status Tab -->
+        <div id="taxiRouteTab" class="tab-content">
+            <div class="main-content">
+                <!-- Service Status Card -->
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h2><i class="fas fa-truck"></i> Fuel Service Status</h2>
+                    <div id="serviceStatus" class="service-status">
+                        <div class="status-message">
+                            <i class="fas fa-info-circle"></i>
+                            <p>Submit a fuel order to track service status</p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Queue and Timer Info -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="card">
+                        <h3><i class="fas fa-users"></i> Queue Status</h3>
+                        <div id="queueInfo" class="queue-info">
+                            <div class="queue-stat">
+                                <span class="stat-number" id="planesAhead">-</span>
+                                <span class="stat-label">Planes Ahead</span>
+                            </div>
+                            <div class="queue-stat">
+                                <span class="stat-number" id="currentPosition">-</span>
+                                <span class="stat-label">Your Position</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-clock"></i> Time Remaining</h3>
+                        <div id="countdownTimer" class="countdown-timer">
+                            <div class="timer-display">
+                                <span id="timerMinutes">--</span>:<span id="timerSeconds">--</span>
+                            </div>
+                            <div class="timer-label">Estimated Time</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('home')">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('fuelOrders')">
+            <i class="fas fa-gas-pump"></i>
+            <span>Fuel Request</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('taxiRoute')">
+            <i class="fas fa-truck"></i>
+            <span>Service Status</span>
+        </div>
+    </div>
+
+    <script>
+        let orders = [];
+
+        // Comprehensive airport database
+        const airports = [
+            { code: 'KJFK', name: 'John F. Kennedy International Airport', city: 'New York', state: 'NY' },
+            { code: 'KLGA', name: 'LaGuardia Airport', city: 'New York', state: 'NY' },
+            { code: 'KEWR', name: 'Newark Liberty International Airport', city: 'Newark', state: 'NJ' },
+            { code: 'KPHL', name: 'Philadelphia International Airport', city: 'Philadelphia', state: 'PA' },
+            { code: 'KBOS', name: 'Logan International Airport', city: 'Boston', state: 'MA' },
+            { code: 'KBWI', name: 'Baltimore/Washington International Airport', city: 'Baltimore', state: 'MD' },
+            { code: 'KDCA', name: 'Ronald Reagan Washington National Airport', city: 'Washington', state: 'DC' },
+            { code: 'KIAD', name: 'Washington Dulles International Airport', city: 'Washington', state: 'VA' },
+            { code: 'KATL', name: 'Hartsfield-Jackson Atlanta International Airport', city: 'Atlanta', state: 'GA' },
+            { code: 'KORD', name: 'O\'Hare International Airport', city: 'Chicago', state: 'IL' },
+            { code: 'KMDW', name: 'Midway International Airport', city: 'Chicago', state: 'IL' },
+            { code: 'KDFW', name: 'Dallas/Fort Worth International Airport', city: 'Dallas', state: 'TX' },
+            { code: 'KHOU', name: 'William P. Hobby Airport', city: 'Houston', state: 'TX' },
+            { code: 'KIAH', name: 'George Bush Intercontinental Airport', city: 'Houston', state: 'TX' },
+            { code: 'KLAX', name: 'Los Angeles International Airport', city: 'Los Angeles', state: 'CA' },
+            { code: 'KBUR', name: 'Hollywood Burbank Airport', city: 'Burbank', state: 'CA' },
+            { code: 'KLGB', name: 'Long Beach Airport', city: 'Long Beach', state: 'CA' },
+            { code: 'KSAN', name: 'San Diego International Airport', city: 'San Diego', state: 'CA' },
+            { code: 'KSFO', name: 'San Francisco International Airport', city: 'San Francisco', state: 'CA' },
+            { code: 'KSJC', name: 'Norman Y. Mineta San José International Airport', city: 'San Jose', state: 'CA' },
+            { code: 'KOAK', name: 'Oakland International Airport', city: 'Oakland', state: 'CA' },
+            { code: 'KLAS', name: 'Harry Reid International Airport', city: 'Las Vegas', state: 'NV' },
+            { code: 'KPHX', name: 'Phoenix Sky Harbor International Airport', city: 'Phoenix', state: 'AZ' },
+            { code: 'KDEN', name: 'Denver International Airport', city: 'Denver', state: 'CO' },
+            { code: 'KSEA', name: 'Seattle-Tacoma International Airport', city: 'Seattle', state: 'WA' },
+            { code: 'KPDX', name: 'Portland International Airport', city: 'Portland', state: 'OR' },
+            { code: 'KMIA', name: 'Miami International Airport', city: 'Miami', state: 'FL' },
+            { code: 'KFLL', name: 'Fort Lauderdale-Hollywood International Airport', city: 'Fort Lauderdale', state: 'FL' },
+            { code: 'KMCO', name: 'Orlando International Airport', city: 'Orlando', state: 'FL' },
+            { code: 'KTPA', name: 'Tampa International Airport', city: 'Tampa', state: 'FL' },
+            { code: 'KCLT', name: 'Charlotte Douglas International Airport', city: 'Charlotte', state: 'NC' },
+            { code: 'KMEM', name: 'Memphis International Airport', city: 'Memphis', state: 'TN' },
+            { code: 'KBNA', name: 'Nashville International Airport', city: 'Nashville', state: 'TN' },
+            { code: 'KCVG', name: 'Cincinnati/Northern Kentucky International Airport', city: 'Cincinnati', state: 'OH' },
+            { code: 'KCLE', name: 'Cleveland Hopkins International Airport', city: 'Cleveland', state: 'OH' },
+            { code: 'KPIT', name: 'Pittsburgh International Airport', city: 'Pittsburgh', state: 'PA' },
+            { code: 'KSTL', name: 'Lambert-St. Louis International Airport', city: 'St. Louis', state: 'MO' },
+            { code: 'KMSP', name: 'Minneapolis-St. Paul International Airport', city: 'Minneapolis', state: 'MN' },
+            { code: 'KDET', name: 'Coleman A. Young International Airport', city: 'Detroit', state: 'MI' },
+            { code: 'KIND', name: 'Indianapolis International Airport', city: 'Indianapolis', state: 'IN' },
+            { code: 'KMKE', name: 'General Mitchell International Airport', city: 'Milwaukee', state: 'WI' },
+            { code: 'KOMA', name: 'Eppley Airfield', city: 'Omaha', state: 'NE' },
+            { code: 'KDSM', name: 'Des Moines International Airport', city: 'Des Moines', state: 'IA' },
+            { code: 'KICT', name: 'Wichita Dwight D. Eisenhower National Airport', city: 'Wichita', state: 'KS' },
+            { code: 'KOKC', name: 'Will Rogers World Airport', city: 'Oklahoma City', state: 'OK' },
+            { code: 'KTUL', name: 'Tulsa International Airport', city: 'Tulsa', state: 'OK' },
+            { code: 'KLIT', name: 'Bill and Hillary Clinton National Airport', city: 'Little Rock', state: 'AR' },
+            { code: 'KJAN', name: 'Jackson-Medgar Wiley Evers International Airport', city: 'Jackson', state: 'MS' },
+            { code: 'KBTR', name: 'Baton Rouge Metropolitan Airport', city: 'Baton Rouge', state: 'LA' },
+            { code: 'KMSY', name: 'Louis Armstrong New Orleans International Airport', city: 'New Orleans', state: 'LA' },
+            { code: 'KSAT', name: 'San Antonio International Airport', city: 'San Antonio', state: 'TX' },
+            { code: 'KAUS', name: 'Austin-Bergstrom International Airport', city: 'Austin', state: 'TX' }
+        ];
+
+        // Aircraft fuel compatibility
+        const aircraftData = {
+            'Cessna 172': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 2400 },
+            'Cessna 182': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 3100 },
+            'Piper Cherokee': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 2450 },
+            'Piper Archer': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 2550 },
+            'Beechcraft Bonanza': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 3650 },
+            'Cirrus SR22': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 3600 },
+            'Airbus A320': { fuel: 'Jet-A', nozzle: 'Latch', typicalWeight: 166000 },
+            'Boeing 737': { fuel: 'Jet-A', nozzle: 'Latch', typicalWeight: 174200 },
+            'Boeing 777': { fuel: 'Jet-A1', nozzle: 'Latch', typicalWeight: 545000 },
+            'AgustaWestland AW139': { fuel: 'Jet-A', nozzle: 'Latch', typicalWeight: 15000 }
+        };
+
+        // Handle aircraft selection
+        document.getElementById('aircraftModel').addEventListener('change', function() {
+            const aircraftModel = this.value;
+            const fuelSelect = document.getElementById('fuelType');
+            const weightInput = document.getElementById('aircraftWeight');
+            
+            if (aircraftModel && aircraftData[aircraftModel]) {
+                const aircraft = aircraftData[aircraftModel];
+                fuelSelect.value = aircraft.fuel;
+                weightInput.placeholder = `Typical: ${aircraft.typicalWeight.toLocaleString()} lbs`;
+            }
+        });
+
+        // Airport search functionality
+        let selectedAirportIndex = -1;
+        const destinationInput = document.getElementById('destination');
+        const airportDropdown = document.getElementById('airportDropdown');
+
+        destinationInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            selectedAirportIndex = -1;
+            
+            if (query.length < 2) {
+                airportDropdown.classList.remove('show');
+                return;
+            }
+
+            const filteredAirports = airports.filter(airport => 
+                airport.code.toLowerCase().includes(query) ||
+                airport.name.toLowerCase().includes(query) ||
+                airport.city.toLowerCase().includes(query) ||
+                airport.state.toLowerCase().includes(query)
+            ).slice(0, 8); // Show max 8 results
+
+            if (filteredAirports.length > 0) {
+                airportDropdown.innerHTML = filteredAirports.map((airport, index) => `
+                    <div class="airport-item" data-index="${index}" onclick="selectAirport('${airport.code}', '${airport.name}', '${airport.city}', '${airport.state}')">
+                        <div class="airport-code">${airport.code.replace('K', '')}</div>
+                        <div class="airport-name">${airport.name}</div>
+                        <div class="airport-location">${airport.city}, ${airport.state}</div>
+                    </div>
+                `).join('');
+                airportDropdown.classList.add('show');
+            } else {
+                airportDropdown.classList.remove('show');
+            }
+        });
+
+        destinationInput.addEventListener('keydown', function(e) {
+            const items = airportDropdown.querySelectorAll('.airport-item');
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedAirportIndex = Math.min(selectedAirportIndex + 1, items.length - 1);
+                updateHighlight(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedAirportIndex = Math.max(selectedAirportIndex - 1, -1);
+                updateHighlight(items);
+            } else if (e.key === 'Enter' && selectedAirportIndex >= 0) {
+                e.preventDefault();
+                items[selectedAirportIndex].click();
+            } else if (e.key === 'Escape') {
+                airportDropdown.classList.remove('show');
+                selectedAirportIndex = -1;
+            }
+        });
+
+        function updateHighlight(items) {
+            items.forEach((item, index) => {
+                item.classList.toggle('highlighted', index === selectedAirportIndex);
+            });
+        }
+
+        function selectAirport(code, name, city, state) {
+            const displayCode = code.replace('K', '');
+            destinationInput.value = `${displayCode} - ${name}`;
+            destinationInput.dataset.airportCode = code;
+            airportDropdown.classList.remove('show');
+            selectedAirportIndex = -1;
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.airport-search-container')) {
+                airportDropdown.classList.remove('show');
+                selectedAirportIndex = -1;
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('fuelForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const aircraftModel = document.getElementById('aircraftModel').value;
+            const fuelType = document.getElementById('fuelType').value;
+            const aircraftWeight = document.getElementById('aircraftWeight').value;
+            const fuelAmount = document.getElementById('fuelAmount').value;
+            const tailNumber = document.getElementById('tailNumber').value;
+            const destination = document.getElementById('destination').value;
+            const destinationCode = document.getElementById('destination').dataset.airportCode || destination;
+            const specialRequests = document.getElementById('specialRequests').value;
+            
+            // Check if service is already active
+            if (isServiceActive) {
+                alert('A fuel service is currently in progress. Please wait for completion before submitting a new request.');
+                return;
+            }
+
+            if (aircraftModel && fuelType && aircraftWeight && fuelAmount && tailNumber && destination) {
+                const order = {
+                    id: Date.now(),
+                    aircraftModel,
+                    fuelType,
+                    aircraftWeight: parseInt(aircraftWeight),
+                    fuelAmount: parseInt(fuelAmount),
+                    tailNumber: tailNumber.toUpperCase(),
+                    destination,
+                    destinationCode,
+                    specialRequests,
+                    timestamp: new Date(),
+                    nozzle: aircraftData[aircraftModel].nozzle,
+                    status: 'Active'
+                };
+                
+                orders.push(order);
+                updateOrdersList();
+                
+                // Show success message
+                const successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+                
+                // Clear form
+                this.reset();
+                
+                // Switch to service status tab after 2 seconds and start tracking
+                setTimeout(() => {
+                    switchTab('taxiRoute');
+                    startFuelServiceTracking(order);
+                }, 2000);
+            }
+        });
+
+        // Update orders list
+        function updateOrdersList() {
+            const ordersList = document.getElementById('ordersList');
+            
+            if (orders.length === 0) {
+                ordersList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard"></i>
+                        <p>No fuel requests yet</p>
+                    </div>
+                `;
+            } else {
+                ordersList.innerHTML = orders.map(order => `
+                    <div class="order-item">
+                        <h4>Request #${order.id.toString().slice(-4)} - ${order.status}</h4>
+                        <p><strong>Aircraft:</strong> ${order.aircraftModel} (${order.tailNumber}) - ${order.aircraftWeight.toLocaleString()} lbs</p>
+                        <p><strong>Fuel:</strong> ${order.fuelType} (${order.fuelAmount} gal) - ${order.nozzle}</p>
+                        <p><strong>Destination:</strong> ${order.destination}</p>
+                        ${order.specialRequests ? `<p><strong>Special Requests:</strong> ${order.specialRequests}</p>` : ''}
+                        <p><strong>Submitted:</strong> ${order.timestamp.toLocaleString()}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Fuel service tracking variables
+        let serviceTimer = null;
+        let currentServiceOrder = null;
+        let isServiceActive = false;
+
+        // Fuel service tracking function
+        function startFuelServiceTracking(order) {
+            currentServiceOrder = order;
+            isServiceActive = true;
+            
+            // Generate random queue data
+            const planesAhead = Math.floor(Math.random() * 4) + 1; // 1-4 planes ahead
+            const currentPosition = planesAhead + 1;
+            const estimatedMinutes = Math.floor(Math.random() * 15) + 10; // 10-25 minutes
+            
+            // Update service status
+            const serviceStatus = document.getElementById('serviceStatus');
+            serviceStatus.className = 'service-status service-active';
+            serviceStatus.innerHTML = `
+                <div class="status-message">
+                    <i class="fas fa-truck-loading"></i>
+                    <p><strong>Active Service:</strong> Fuel bot dispatched for ${order.aircraftModel} (${order.tailNumber})</p>
+                </div>
+            `;
+            
+            // Update queue information
+            document.getElementById('planesAhead').textContent = planesAhead;
+            document.getElementById('currentPosition').textContent = currentPosition;
+            
+            // Simulate different service areas (no visual map needed)
+            const serviceAreas = [
+                'Fuel Depot',
+                'Taxiway Alpha', 
+                'Runway 06/24',
+                'Terminal Ramp',
+                'Gate Area'
+            ];
+            
+            // Start countdown timer
+            startCountdownTimer(estimatedMinutes * 60); // Convert to seconds
+            
+            // Update service status every 30 seconds
+            let areaIndex = 0;
+            const statusTimer = setInterval(() => {
+                if (areaIndex < serviceAreas.length - 1) {
+                    areaIndex++;
+                    const currentArea = serviceAreas[areaIndex];
+                    
+                    // Update status message
+                    serviceStatus.innerHTML = `
+                        <div class="status-message">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p><strong>In Progress:</strong> Fuel bot servicing ${order.aircraftModel} (${order.tailNumber}) - Currently at ${currentArea}</p>
+                        </div>
+                    `;
+                } else {
+                    clearInterval(statusTimer);
+                    // Service completed
+                    serviceStatus.className = 'service-status';
+                    serviceStatus.innerHTML = `
+                        <div class="status-message">
+                            <i class="fas fa-check-circle"></i>
+                            <p><strong>Completed:</strong> Fuel service finished for ${order.aircraftModel} (${order.tailNumber})</p>
+                        </div>
+                    `;
+                    isServiceActive = false;
+                    
+                    // Update order status in the list
+                    if (currentServiceOrder) {
+                        currentServiceOrder.status = 'Completed';
+                        updateOrdersList();
+                    }
+                }
+            }, 30000); // Update every 30 seconds
+        }
+
+        // Countdown timer function
+        function startCountdownTimer(totalSeconds) {
+            if (serviceTimer) clearInterval(serviceTimer);
+            
+            let remainingSeconds = totalSeconds;
+            
+            serviceTimer = setInterval(() => {
+                const minutes = Math.floor(remainingSeconds / 60);
+                const seconds = remainingSeconds % 60;
+                
+                document.getElementById('timerMinutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('timerSeconds').textContent = seconds.toString().padStart(2, '0');
+                
+                remainingSeconds--;
+                
+                if (remainingSeconds < 0) {
+                    clearInterval(serviceTimer);
+                    document.getElementById('timerMinutes').textContent = '00';
+                    document.getElementById('timerSeconds').textContent = '00';
+                    
+                    // Complete the service if timer reaches zero
+                    if (isServiceActive && currentServiceOrder) {
+                        const serviceStatus = document.getElementById('serviceStatus');
+                        serviceStatus.className = 'service-status';
+                        serviceStatus.innerHTML = `
+                            <div class="status-message">
+                                <i class="fas fa-check-circle"></i>
+                                <p><strong>Completed:</strong> Fuel service finished for ${currentServiceOrder.aircraftModel} (${currentServiceOrder.tailNumber})</p>
+                            </div>
+                        `;
+                        
+                        // Reset service status
+                        isServiceActive = false;
+                        
+                        // Update order status in the list
+                        currentServiceOrder.status = 'Completed';
+                        updateOrdersList();
+                        
+                        // Reset queue display
+                        document.getElementById('planesAhead').textContent = '0';
+                        document.getElementById('currentPosition').textContent = '1';
+                    }
+                }
+            }, 1000);
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(nav => {
+                nav.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Add active class to corresponding nav item
+            const navItems = document.querySelectorAll('.nav-item');
+            if (tabName === 'home') {
+                navItems[0].classList.add('active');
+            } else if (tabName === 'fuelOrders') {
+                navItems[1].classList.add('active');
+            } else if (tabName === 'taxiRoute') {
+                navItems[2].classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
