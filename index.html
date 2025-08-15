@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #17726d 0%, #ffffff 100%);
             min-height: 100vh;
             color: #333;
         }
@@ -47,7 +47,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-            margin-bottom: 80px;
+            margin-bottom: 300px;
         }
 
         .card {
@@ -91,12 +91,12 @@
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #17726d;
         }
 
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #17726d 0%, #ffffff 100%);
+            color: #17726d;
             border: none;
             padding: 15px 30px;
             border-radius: 10px;
@@ -121,7 +121,7 @@
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 10px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #17726d;
         }
 
         .order-item h4 {
@@ -155,33 +155,32 @@
             border-top: 1px solid #e1e5e9;
             display: flex;
             justify-content: center;
-            padding: 15px 0;
+            padding: 10px 0;
             box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
         }
 
         .nav-item {
             flex: 1;
             text-align: center;
-            padding: 10px;
+            padding: 8px;
             color: #999;
-            text-decoration: none;
+            cursor: pointer;
             transition: color 0.3s ease;
             max-width: 120px;
-            cursor: pointer;
         }
 
         .nav-item.active {
-            color: #667eea;
+            color: #17726d;
         }
 
         .nav-item i {
             display: block;
-            font-size: 20px;
-            margin-bottom: 5px;
+            font-size: 18px;
+            margin-bottom: 3px;
         }
 
         .nav-item span {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
         }
 
@@ -233,7 +232,7 @@
 
         .status-message i {
             font-size: 20px;
-            color: #667eea;
+            color: #17726d;
         }
 
         .airport-map-container {
@@ -281,7 +280,7 @@
             display: block;
             font-size: 2.5rem;
             font-weight: 700;
-            color: #667eea;
+            color: #17726d;
             margin-bottom: 5px;
         }
 
@@ -349,7 +348,7 @@
 
         .profile-item i {
             font-size: 24px;
-            color: #667eea;
+            color: #17726d;
             width: 30px;
         }
 
@@ -411,7 +410,7 @@
 
         .detail-row i {
             margin-right: 8px;
-            color: #667eea;
+            color: #17726d;
         }
 
         .airport-search-container {
@@ -455,7 +454,7 @@
 
         .airport-code {
             font-weight: 600;
-            color: #667eea;
+            color: #17726d;
             font-size: 14px;
         }
 
@@ -483,6 +482,52 @@
             
             .card {
                 padding: 20px;
+            }
+            
+            .form-group {
+                margin-bottom: 25px;
+            }
+            
+            .form-group input,
+            .form-group select {
+                padding: 16px 20px;
+                font-size: 16px;
+                border-radius: 12px;
+                border: 2px solid #e1e5e9;
+                background: #fafafa;
+                transition: all 0.3s ease;
+                -webkit-appearance: none;
+                appearance: none;
+            }
+            
+            .form-group input:focus,
+            .form-group select:focus {
+                background: white;
+                border-color: #17726d;
+                box-shadow: 0 0 0 3px rgba(23, 114, 109, 0.1);
+                transform: translateY(-1px);
+            }
+            
+            .form-group label {
+                font-size: 14px;
+                font-weight: 600;
+                color: #17726d;
+                margin-bottom: 10px;
+            }
+            
+            .btn {
+                padding: 18px 30px;
+                font-size: 16px;
+                border-radius: 12px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                box-shadow: 0 4px 15px rgba(23, 114, 109, 0.3);
+                transition: all 0.3s ease;
+            }
+            
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(23, 114, 109, 0.4);
             }
         }
     </style>
@@ -543,16 +588,11 @@
                                 <label for="aircraftModel">Aircraft Model</label>
                                 <select id="aircraftModel" required>
                                     <option value="">Select Aircraft Model</option>
-                                    <option value="Cessna 172">Cessna 172</option>
-                                    <option value="Cessna 182">Cessna 182</option>
-                                    <option value="Piper Cherokee">Piper Cherokee</option>
-                                    <option value="Piper Archer">Piper Archer</option>
-                                    <option value="Beechcraft Bonanza">Beechcraft Bonanza</option>
-                                    <option value="Cirrus SR22">Cirrus SR22</option>
+                                    <option value="Agusta AW139">Agusta AW139</option>
                                     <option value="Airbus A320">Airbus A320</option>
-                                    <option value="Boeing 737">Boeing 737</option>
-                                    <option value="Boeing 777">Boeing 777</option>
-                                    <option value="AgustaWestland AW139">AgustaWestland AW139</option>
+                                    <option value="Cessna 172 Skyhawk">Cessna 172 Skyhawk</option>
+                                    <option value="Gulfstream G550">Gulfstream G550</option>
+                                    <option value="Beachcraft King Air 350">Beachcraft King Air 350</option>
                                 </select>
                             </div>
 
@@ -560,9 +600,10 @@
                                 <label for="fuelType">Fuel Type</label>
                                 <select id="fuelType" required>
                                     <option value="">Select Fuel Type</option>
-                                    <option value="Avgas 100LL">Avgas 100LL</option>
+                                    <option value="100LL">100LL</option>
+                                    <option value="Jet A-1">Jet A-1</option>
                                     <option value="Jet-A">Jet-A</option>
-                                    <option value="Jet-A1">Jet-A1</option>
+                                    <option value="Avgas 100LL">Avgas 100LL</option>
                                 </select>
                             </div>
 
@@ -737,16 +778,11 @@
 
         // Aircraft fuel compatibility
         const aircraftData = {
-            'Cessna 172': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 2400 },
-            'Cessna 182': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 3100 },
-            'Piper Cherokee': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 2450 },
-            'Piper Archer': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 2550 },
-            'Beechcraft Bonanza': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 3650 },
-            'Cirrus SR22': { fuel: 'Avgas 100LL', nozzle: 'Twist off', typicalWeight: 3600 },
-            'Airbus A320': { fuel: 'Jet-A', nozzle: 'Latch', typicalWeight: 166000 },
-            'Boeing 737': { fuel: 'Jet-A', nozzle: 'Latch', typicalWeight: 174200 },
-            'Boeing 777': { fuel: 'Jet-A1', nozzle: 'Latch', typicalWeight: 545000 },
-            'AgustaWestland AW139': { fuel: 'Jet-A', nozzle: 'Latch', typicalWeight: 15000 }
+            'Agusta AW139': { fuel: 'Jet A-1', nozzle: 'Latch', typicalWeight: 15000 },
+            'Airbus A320': { fuel: 'Jet A-1', nozzle: 'Latch', typicalWeight: 166000 },
+            'Cessna 172 Skyhawk': { fuel: '100LL', nozzle: 'Twist off', typicalWeight: 2400 },
+            'Gulfstream G550': { fuel: 'Jet A-1', nozzle: 'Latch', typicalWeight: 91000 },
+            'Beachcraft King Air 350': { fuel: 'Jet A-1', nozzle: 'Latch', typicalWeight: 15000 }
         };
 
         // Handle aircraft selection
