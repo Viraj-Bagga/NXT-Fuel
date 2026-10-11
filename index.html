@@ -1094,7 +1094,7 @@
                         serviceStatus.innerHTML = `
                             <div class="status-message">
                                 <i class="fas fa-check-circle"></i>
-                                <p><strong>Completed:</strong> Fuel service finished for ${currentServiceOrder.aircraftModel} (${currentServiceOrder.tailNumber})</p>
+                                <p><strong>Completed:</strong> Fuel service finished for ${escapeHtml(currentServiceOrder.aircraftModel)} (${escapeHtml(currentServiceOrder.tailNumber)})</p>
                             </div>
                         `;
                         
