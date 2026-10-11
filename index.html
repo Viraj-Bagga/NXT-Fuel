@@ -796,6 +796,14 @@
             { code: 'KAUS', name: 'Austin-Bergstrom International Airport', city: 'Austin', state: 'TX' }
         ];
 
+        // Everything interpolated into innerHTML goes through this first, so text a
+        // user typed is shown as text and never parsed as markup.
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, ch => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[ch]);
+        }
+
         // Aircraft fuel compatibility
         const aircraftData = {
             'Agusta AW139': { fuel: 'Jet A-1', nozzle: 'Latch', typicalWeight: 15000 },
@@ -841,12 +849,19 @@
 
             if (filteredAirports.length > 0) {
                 airportDropdown.innerHTML = filteredAirports.map((airport, index) => `
-                    <div class="airport-item" data-index="${index}" onclick="selectAirport('${airport.code}', '${airport.name}', '${airport.city}', '${airport.state}')">
-                        <div class="airport-code">${airport.code.replace('K', '')}</div>
-                        <div class="airport-name">${airport.name}</div>
-                        <div class="airport-location">${airport.city}, ${airport.state}</div>
+                    <div class="airport-item" data-index="${index}">
+                        <div class="airport-code">${escapeHtml(airport.code.replace(/^K/, ''))}</div>
+                        <div class="airport-name">${escapeHtml(airport.name)}</div>
+                        <div class="airport-location">${escapeHtml(airport.city)}, ${escapeHtml(airport.state)}</div>
                     </div>
                 `).join('');
+                // Listeners, not onclick strings: an apostrophe in a name (O'Hare)
+                // used to end the string literal and break the handler.
+                airportDropdown.querySelectorAll('.airport-item').forEach((item, index) => {
+                    const airport = filteredAirports[index];
+                    item.addEventListener('click', () =>
+                        selectAirport(airport.code, airport.name, airport.city, airport.state));
+                });
                 airportDropdown.classList.add('show');
             } else {
                 airportDropdown.classList.remove('show');
@@ -965,12 +980,12 @@
             } else {
                 ordersList.innerHTML = orders.map(order => `
                     <div class="order-item">
-                        <h4>Request #${order.id.toString().slice(-4)} - ${order.status}</h4>
-                        <p><strong>Aircraft:</strong> ${order.aircraftModel} (${order.tailNumber}) - ${order.aircraftWeight.toLocaleString()} lbs</p>
-                        <p><strong>Fuel:</strong> ${order.fuelType} (${order.fuelAmount} gal) - ${order.nozzle}</p>
-                        <p><strong>Destination:</strong> ${order.destination}</p>
-                        ${order.specialRequests ? `<p><strong>Special Requests:</strong> ${order.specialRequests}</p>` : ''}
-                        <p><strong>Submitted:</strong> ${order.timestamp.toLocaleString()}</p>
+                        <h4>Request #${order.id.toString().slice(-4)} - ${escapeHtml(order.status)}</h4>
+                        <p><strong>Aircraft:</strong> ${escapeHtml(order.aircraftModel)} (${escapeHtml(order.tailNumber)}) - ${escapeHtml(order.aircraftWeight.toLocaleString())} lbs</p>
+                        <p><strong>Fuel:</strong> ${escapeHtml(order.fuelType)} (${escapeHtml(order.fuelAmount)} gal) - ${escapeHtml(order.nozzle)}</p>
+                        <p><strong>Destination:</strong> ${escapeHtml(order.destination)}</p>
+                        ${order.specialRequests ? `<p><strong>Special Requests:</strong> ${escapeHtml(order.specialRequests)}</p>` : ''}
+                        <p><strong>Submitted:</strong> ${escapeHtml(order.timestamp.toLocaleString())}</p>
                     </div>
                 `).join('');
             }
@@ -997,7 +1012,7 @@
             serviceStatus.innerHTML = `
                 <div class="status-message">
                     <i class="fas fa-truck-loading"></i>
-                    <p><strong>Active Service:</strong> Fuel bot dispatched for ${order.aircraftModel} (${order.tailNumber})</p>
+                    <p><strong>Active Service:</strong> Fuel bot dispatched for ${escapeHtml(order.aircraftModel)} (${escapeHtml(order.tailNumber)})</p>
                 </div>
             `;
             
@@ -1028,7 +1043,7 @@
                     serviceStatus.innerHTML = `
                         <div class="status-message">
                             <i class="fas fa-map-marker-alt"></i>
-                            <p><strong>In Progress:</strong> Fuel bot servicing ${order.aircraftModel} (${order.tailNumber}) - Currently at ${currentArea}</p>
+                            <p><strong>In Progress:</strong> Fuel bot servicing ${escapeHtml(order.aircraftModel)} (${escapeHtml(order.tailNumber)}) - Currently at ${escapeHtml(currentArea)}</p>
                         </div>
                     `;
                 } else {
@@ -1038,7 +1053,7 @@
                     serviceStatus.innerHTML = `
                         <div class="status-message">
                             <i class="fas fa-check-circle"></i>
-                            <p><strong>Completed:</strong> Fuel service finished for ${order.aircraftModel} (${order.tailNumber})</p>
+                            <p><strong>Completed:</strong> Fuel service finished for ${escapeHtml(order.aircraftModel)} (${escapeHtml(order.tailNumber)})</p>
                         </div>
                     `;
                     isServiceActive = false;
